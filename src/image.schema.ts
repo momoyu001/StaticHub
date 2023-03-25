@@ -6,6 +6,9 @@ export type ImageDocument = Image & Document;
 @Schema()
 export class Image {
   @Prop({ required: true })
+  id: string;
+
+  @Prop({ required: true })
   name: string;
 
   @Prop({ required: true })
@@ -13,6 +16,9 @@ export class Image {
 
   @Prop({ required: true })
   url: string;
+
+  @Prop({ required: true })
+  preview: string;
 
   @Prop({ required: true })
   createdDate: string;

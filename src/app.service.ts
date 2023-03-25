@@ -9,11 +9,19 @@ export class AppService {
     @InjectModel(Image.name) private imageModel: Model<ImageDocument>,
   ) {}
 
-  async create(name: string, content: string, url: string): Promise<Image> {
+  async create(
+    id: string,
+    name: string,
+    content: string,
+    url: string,
+    preview: string,
+  ): Promise<Image> {
     const createdImage = new this.imageModel({
+      id,
       name,
       content,
       url,
+      preview,
     });
 
     return createdImage.save();
