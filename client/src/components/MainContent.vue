@@ -18,7 +18,11 @@
 import TableList from './TableList.vue'
 import Upload from '@/components/Upload.vue'
 
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+
+import { useRequest } from '@/utils/use-request'
+
+const { $axios } = useRequest()
 
 let data = [
   {
@@ -44,6 +48,11 @@ let result = ref({
 })
 let total = computed(() => {
   return result.value.total
+})
+
+onMounted(async () => {
+  const result = await $axios.get('/hello')
+  console.log('接口请求结果：', result)
 })
 
 const handleSearch = () => {
