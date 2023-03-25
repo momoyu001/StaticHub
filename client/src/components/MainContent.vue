@@ -24,14 +24,14 @@ let data = [
   {
     id: 1,
     name: '图片',
-    address: 'http://xxxxx',
+    url: 'http://xxxxx',
     note: 'vue3源码截图',
     preview: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
   },
   {
     id: 2,
     name: '图片1212',
-    address: 'http://xxxxx',
+    url: 'http://xxxxx',
     note: 'vue3源码截图',
     preview: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
   }

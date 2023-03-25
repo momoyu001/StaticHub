@@ -3,7 +3,7 @@
     <el-table :data="data" :border="true" style="width: 100%">
       <el-table-column prop="id" label="编号"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column prop="address" label="地址"></el-table-column>
+      <el-table-column prop="url" label="地址"></el-table-column>
       <el-table-column prop="note" label="备注"></el-table-column>
       <el-table-column prop="preview" label="预览">
         <template #default="scope">
@@ -37,7 +37,7 @@ import { ref } from 'vue'
 interface dataType {
   id: number
   name: string
-  address: string
+  url: string
   note: string
   preview: string
 }
