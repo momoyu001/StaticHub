@@ -7,7 +7,13 @@
       <el-table-column prop="note" label="备注"></el-table-column>
       <el-table-column prop="preview" label="预览">
         <template #default="scope">
-          <img class="preview-img" :src="scope.row.preview" alt="图片预览" srcset="" />
+          <img
+            class="preview-img"
+            :src="scope.row.preview"
+            alt="图片预览"
+            srcset=""
+            @click="handlePreview(scope.row.preview)"
+          />
         </template>
       </el-table-column>
     </el-table>
@@ -19,10 +25,15 @@
       @next-click="nextClick"
       @current-change="currentChange"
     ></el-pagination>
+
+    <el-dialog v-model="dialogVisible" title="图片预览" width="600px">
+      <img class="img" w-full :src="dialogImageUrl" alt="Preview Image" />
+    </el-dialog>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
 interface dataType {
   id: number
   name: string
@@ -35,6 +46,9 @@ interface Props {
   data: dataType[]
   total: number
 }
+
+let dialogImageUrl = ref('')
+let dialogVisible = ref(false)
 
 withDefaults(defineProps<Props>(), {
   data: () => []
@@ -51,6 +65,11 @@ function nextClick(value: number) {
 function currentChange(value: number) {
   console.log('页码：', value)
 }
+
+function handlePreview(url: string) {
+  dialogImageUrl.value = url
+  dialogVisible.value = true
+}
 </script>
 
 <style scoped lang="less">
@@ -62,6 +81,16 @@ function currentChange(value: number) {
   .preview-img {
     width: 100px;
     height: 60px;
+    cursor: pointer;
+  }
+
+  /deep/ .el-dialog__header {
+    height: 54px;
+  }
+
+  .img {
+    width: 550px;
+    margin: 0px auto;
   }
 }
 </style>
