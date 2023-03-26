@@ -2,12 +2,15 @@ import {
   Controller,
   Get,
   Post,
+  Body,
+  HttpCode,
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
 import { MulterFile } from 'multer';
+import { ImageOuterType, ImageInnerType } from './types';
 
 @Controller()
 export class AppController {
@@ -18,9 +21,9 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Post()
-  @UseInterceptors(FileInterceptor('image'))
-  async uploadImage(@UploadedFile() image: MulterFile) {
+  @Post('/img/upload')
+  @HttpCode(200)
+  async uploadImage(@Body() imageParam: ImageOuterType) {
     /**
      * 生成 uuid
      */
@@ -43,19 +46,34 @@ export class AppController {
       return uuid;
     }
 
-    console.log('image：', image);
-    const imageName = image.originalname;
-    const imageData = image.buffer.toString('base64');
-    const imageUrl = `http://localhost:3000/${imageName}`;
-    const createdImage = await this.appService.create(
-      generateUUID(),
-      imageName,
-      imageData,
-      imageUrl,
-      imageUrl,
-    );
+    /**
+     * 获取当前时间
+     */
+    function getDate() {
+      const now = Date.now();
+      const date = new Date(now);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+
+      return `${year}-${month}-${day}`;
+    }
+
+    const param: ImageInnerType = {
+      id: generateUUID(),
+      name: imageParam.name,
+      content: imageParam.content,
+      preview: imageParam.content,
+      createDate: getDate(),
+      url: '',
+    };
+
+    const createdImage = await this.appService.create(param);
+    console.log('接口返回值：', createdImage);
+
     return {
-      url: createdImage.url,
+      success: true,
+      code: 0,
     };
   }
 }

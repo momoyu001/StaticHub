@@ -57,12 +57,20 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { type UploadProps, type UploadUserFile, type UploadInstance, ElMessage } from 'element-plus'
+import type { ImageData } from '@/types/index'
+
+import { useRequest } from '@/utils/use-request'
+
+const { $axios } = useRequest()
 
 let isOpen = ref(false)
 let uploadType = ref('local')
 let dialogVisible = ref(false)
 let dialogImageUrl = ref('')
 let uploadRef = ref<UploadInstance>()
+let loading = ref(false)
+let imgContent = ref('')
+let imgName = ref('')
 let action = ''
 
 const fileList = ref<UploadUserFile[]>([])
@@ -92,9 +100,19 @@ const handleSuccess: UploadProps['onSuccess'] = (response, uploadFile, uploadFil
   console.log('上传成功')
 }
 
-const handleChange: UploadProps['onChange'] = (uploadFile, uploadFiles) => {
+const handleChange: UploadProps['onChange'] = async (uploadFile, uploadFiles) => {
   console.log(uploadFile, uploadFiles)
-  console.log('状态改变')
+
+  loading.value = true
+
+  // 使用 FileReader 将图片转换为 base64
+  const reader = new FileReader()
+  reader.readAsDataURL(uploadFile.raw as Blob)
+  reader.onload = async () => {
+    loading.value = false
+    imgName.value = uploadFile.name
+    imgContent.value = reader.result as string
+  }
 }
 const handleOnExceed: UploadProps['onExceed'] = (files: File[], uploadFiles: UploadUserFile[]) => {
   console.log(files, uploadFiles)
@@ -106,9 +124,23 @@ const handleBeforeUpload: UploadProps['beforeUpload'] = () => {
   console.log('上传之前')
 }
 
-const uploadConfirm = () => {
-  uploadRef.value?.submit()
+const uploadConfirm = async () => {
   console.log('确认上传')
+  if (loading.value) {
+    ElMessage.warning('图片还未准备就绪')
+    return
+  }
+
+  const param: ImageData = {
+    name: imgName.value,
+    content: imgContent.value
+  }
+
+  const result: { code: number; message: string } = await $axios.post('/img/upload', param)
+  if (result.code === 0) {
+    ElMessage.success('上传成功')
+  }
+  console.log('接口返回值：', result)
 }
 
 const doCloseDialog = (done: () => void) => {

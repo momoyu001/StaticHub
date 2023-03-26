@@ -14,14 +14,14 @@ export class Image {
   @Prop({ required: true })
   content: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   url: string;
 
   @Prop({ required: true })
   preview: string;
 
   @Prop({ required: true })
-  createdDate: string;
+  createDate: string;
 }
 
 export const ImageSchema = SchemaFactory.createForClass(Image);
