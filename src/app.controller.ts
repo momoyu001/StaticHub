@@ -25,11 +25,13 @@ export class AppController {
   @Post('/img/upload')
   @HttpCode(200)
   async uploadImage(@Body() imageParam: ImageOuterType) {
+    const { name, content } = imageParam;
+
     const param: ImageInnerType = {
       id: generateUUID(),
-      name: imageParam.name,
-      content: imageParam.content,
-      preview: imageParam.content,
+      name,
+      content,
+      preview: content,
       createDate: getDate(),
       url: '',
     };
