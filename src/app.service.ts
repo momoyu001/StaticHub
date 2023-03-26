@@ -36,6 +36,19 @@ export class AppService {
   }
 
   /**
+   * 根据ID查询图片具体信
+   * **/
+  getImageById(id: string): Promise<Image[]> {
+    try {
+      if (id) {
+        return this.imageModel.find({ id }).exec();
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
    * 测试接口
    * **/
   getHello(): string {

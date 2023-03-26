@@ -4,6 +4,7 @@ import {
   Post,
   Body,
   HttpCode,
+  Param,
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
@@ -26,8 +27,31 @@ export class AppController {
   }
 
   /**
-   * 上传图片的接口
+   * 查询图片具体信息的接口
    * **/
+  @Get('/img/:id')
+  @HttpCode(200)
+  async serveImage(@Param('id') id: string) {
+    try {
+      const result = await this.appService.getImageById(id);
+      if (result) {
+        const imageData = result[0];
+        return {
+          code: 0,
+          success: true,
+          message: 'success',
+          result: imageData,
+        };
+      }
+    } catch (e) {
+      console.log(e);
+      return {
+        code: 100,
+        message: 'Error',
+      };
+    }
+  }
+
   @Post('/img/upload')
   @HttpCode(200)
   async uploadImage(@Body() imageParam: ImageOuterType) {

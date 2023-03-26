@@ -1,6 +1,6 @@
 <template>
   <div class="table-list-module">
-    <el-table :data="data" :border="true" style="width: 100%">
+    <el-table :data="data" :border="true" style="width: 100%" @row-click="handleRowClick">
       <el-table-column prop="id" label="编号"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
       <el-table-column prop="url" label="地址"></el-table-column>
@@ -34,6 +34,10 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { useRequest } from '@/utils/use-request'
+
+const { $axios } = useRequest()
+
 interface dataType {
   id: number
   name: string
@@ -69,6 +73,11 @@ function currentChange(value: number) {
 function handlePreview(url: string) {
   dialogImageUrl.value = url
   dialogVisible.value = true
+}
+
+async function handleRowClick(row: any) {
+  const result = await $axios.get(`/img/${row.id}`)
+  console.log(result)
 }
 </script>
 
