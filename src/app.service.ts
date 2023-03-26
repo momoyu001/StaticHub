@@ -20,6 +20,22 @@ export class AppService {
   }
 
   /**
+   * 查询所有图片数据，返回列表
+   * **/
+  getImageList(options = null) {
+    try {
+      let filter = null;
+      if (options) {
+        const { name } = options;
+        filter = { name: new RegExp(name, 'i') };
+        return this.imageModel.find(filter).exec();
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
    * 测试接口
    * **/
   getHello(): string {

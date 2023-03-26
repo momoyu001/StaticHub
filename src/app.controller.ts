@@ -51,4 +51,26 @@ export class AppController {
       code: 0,
     };
   }
+
+  /**
+   * 查询所有图片
+   * **/
+  @Post('/img/all')
+  @HttpCode(200)
+  async getImageList(@Body() body) {
+    try {
+      const result = await this.appService.getImageList(body);
+      return {
+        code: 0,
+        result,
+        message: 'success',
+      };
+    } catch (e) {
+      console.log(e);
+      return {
+        code: 100,
+        message: 'Error',
+      };
+    }
+  }
 }
