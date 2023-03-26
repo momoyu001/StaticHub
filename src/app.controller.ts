@@ -17,11 +17,17 @@ import { generateUUID, getDate } from './utils';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  /**
+   * 测试接口
+   * **/
   @Get('/hello')
   getHello(): string {
     return this.appService.getHello();
   }
 
+  /**
+   * 上传图片的接口
+   * **/
   @Post('/img/upload')
   @HttpCode(200)
   async uploadImage(@Body() imageParam: ImageOuterType) {
