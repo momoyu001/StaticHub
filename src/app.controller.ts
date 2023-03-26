@@ -59,10 +59,10 @@ export class AppController {
   @HttpCode(200)
   async getImageList(@Body() body) {
     try {
-      const result = await this.appService.getImageList(body);
+      const result = (await this.appService.getImageList(body)) || [];
       return {
         code: 0,
-        result,
+        result: result.reverse(),
         message: 'success',
       };
     } catch (e) {

@@ -22,7 +22,7 @@ export class AppService {
   /**
    * 查询所有图片数据，返回列表
    * **/
-  getImageList(options = null) {
+  getImageList(options = null): Promise<Image[]> {
     try {
       let filter = null;
       if (options) {
