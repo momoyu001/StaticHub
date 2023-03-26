@@ -25,7 +25,7 @@ export class AppController {
   @Post('/img/upload')
   @HttpCode(200)
   async uploadImage(@Body() imageParam: ImageOuterType) {
-    const { name, content } = imageParam;
+    const { name, content, type } = imageParam;
 
     const param: ImageInnerType = {
       id: generateUUID(),
@@ -34,6 +34,7 @@ export class AppController {
       preview: content,
       createDate: getDate(),
       url: '',
+      type,
     };
 
     const createdImage = await this.appService.create(param);

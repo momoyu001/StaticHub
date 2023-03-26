@@ -8,6 +8,7 @@ export interface ImageInnerType {
   preview: string;
   createDate: string;
   url: string;
+  type: string;
 }
 
 /**
@@ -16,4 +17,5 @@ export interface ImageInnerType {
 export interface ImageOuterType {
   name: string;
   content: string;
+  type: string;
 }

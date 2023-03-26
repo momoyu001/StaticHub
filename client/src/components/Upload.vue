@@ -71,6 +71,7 @@ let uploadRef = ref<UploadInstance>()
 let loading = ref(false)
 let imgContent = ref('')
 let imgName = ref('')
+let imgType = ref('')
 let action = ''
 
 const fileList = ref<UploadUserFile[]>([])
@@ -111,6 +112,7 @@ const handleChange: UploadProps['onChange'] = async (uploadFile, uploadFiles) =>
   reader.onload = async () => {
     loading.value = false
     imgName.value = uploadFile.name
+    imgType.value = uploadFile.name.split('.')[1]
     imgContent.value = reader.result as string
   }
 }
@@ -133,7 +135,8 @@ const uploadConfirm = async () => {
 
   const param: ImageData = {
     name: imgName.value,
-    content: imgContent.value
+    content: imgContent.value,
+    type: imgType.value
   }
 
   const result: { code: number; message: string } = await $axios.post('/img/upload', param)
